@@ -2,12 +2,13 @@
 #define CPP_BARE_CLI_INTERPRETER_H
 
 #include <iostream>
+#include "../structs/config.h"
 
 class Interpreter {
 private:
-    static void trim(std::string &input);
+    static void trim(std::string &input, Config *config);
 public:
-    static void interpret(std::string input, bool &keepOpen);
+    static void interpret(std::string input, Config *config, bool &keepOpen);
 };
 
 
