@@ -1,18 +1,15 @@
 #include "interpreter.h"
-#include "../config/cli.h"
 #include "../exceptions/invalidinput.h"
+#include "../impl/impl.h"
 #include <iostream>
 #include <string>
 #include <regex>
 
-void Interpreter::trim(std::string &input) {
-    std::string expr = INPUT_END_CHAR;
-    expr.insert(1,"$");
-    std::regex lineEnding = std::regex(expr);
-
+void Interpreter::trim(std::string &input, Config *config) {
+    std::regex lineEnding = std::regex(config->input_end_char.insert(1, "$"));
     input = std::regex_replace(input, std::regex("(^[ ]*|[ ]*$)"), "");
 
-    switch (INPUT_END) {
+    switch (config->input_ending) {
         case NoLineEnding:
             break;
         case OptionalLineEnding:
@@ -27,13 +24,13 @@ void Interpreter::trim(std::string &input) {
     }
 }
 
-void Interpreter::interpret(std::string input, bool &keepOpen) {
-    trim(input);
+void Interpreter::interpret(std::string input, Config *config, bool &keepOpen) {
+    trim(input, config);
 
     if (input == "exit") {
         keepOpen = false;
         return;
     }
 
-    std::cout << "Implement interpretation of: " << input;
+    Impl::main(input);
 }
